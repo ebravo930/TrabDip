@@ -70,6 +70,8 @@ def ListarPac():
         # -------------------------------------------------------------------------------
         if cursor.rowcount > 0:
             print("-" * 80)
+            print("|"," " * 28, "Lista de Pacientes", " " * 28,"|")
+            print("-" * 80)
             print("RUT \t| Nombre \t\t| Total Paciente[",cursor.rowcount,"]")
             print("-" * 80)
             row = cursor.fetchone() #Itera en el resultado, obtenidno los datos de la sigueinte fila

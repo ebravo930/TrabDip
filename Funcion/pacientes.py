@@ -7,20 +7,24 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def NuevoPaciente():
+    clear_screen()
     pacientes=[]
     while True:
+        print("-" * 80)
         l=Paciente()
         l.SetRut(input('Ingresa Rut Paciente: \n'))
         l.SetNombre(input('Ingresa Nombre Paciente: \n'))
         pacientes.append(l)
+        print("-" * 80)
         for paciente in pacientes:
             InsPac(paciente)
         break
 
 def VerPaciente():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    ListarPac()
-    print("")
+    clear_screen()    
+    print("-" * 80)
+    ListarPac()    
+    print("-" * 80)
     opcion = input('Ingresa:  1 para volver al menu | 2 Para editar datos Paciente \n \n ')
 
     if opcion == '1':
