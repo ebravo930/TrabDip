@@ -52,9 +52,22 @@ def InsPac(l):
     try:
         conexion = conectar_bd()
         cursor = conexion.cursor()
-        query = "INSERT INTO Paciente (rut, nombre) VALUES(%s,%s);"
-        cursor.execute(query, (l.GetRut(), l.GetNombre()))
-        conexion.commit()
+        pacienteexiste = valida_paciente_existe(l.GetRut())
+
+        if pacienteexiste:
+            query = "INSERT INTO Paciente (rut, nombre) VALUES(%s,%s);"
+            cursor.execute(query, (l.GetRut(), l.GetNombre()))
+            conexion.commit()
+
+            if cursor.rowcount > 0:
+                print("Paciente ingresado con exito.")
+            else:
+                print("Error al ingresar al paciente.")
+            
+            punto_interrupcion()
+        else:
+            print("El rut ingresado, ya se encuentra en nuestros registros")
+            punto_interrupcion()
 
     except psy.Error as error:
         print("Error al ejecutar la consulta:", error)
@@ -126,3 +139,27 @@ def EditaPaciente(l):
             cursor.close()
         if conexion:
             conexion.close() 
+
+def valida_paciente_existe(rut):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "SELECT pacienteid FROM paciente WHERE rut = %s;"
+        cursor.execute(query, (rut,))
+
+        if cursor.rowcount > 0:
+            return False
+        else:
+            return True
+            
+    except psy.Error as error:
+        print("Error al ejecutar la consulta: ", error)
+
+    except TypeError as e:
+        print("Error al ejecutar la consulta: ",e)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion:
+            conexion.close()

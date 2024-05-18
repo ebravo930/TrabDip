@@ -16,7 +16,7 @@ def NuevaHabitacion():
             print("Nuemro no valido. Por favor, ingresa un Nuemro válido. Volviendo al menu principal")
             punto_interrupcion()
             break
-        l.SetNumero()
+        l.SetNumero(numero)
 
         capacidad = input('Ingresa capacidad de camas \n')
         if not validar_entero(capacidad):

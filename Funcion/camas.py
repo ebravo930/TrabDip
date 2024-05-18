@@ -20,9 +20,34 @@ def NuevoCama():
             InsCama(cama)
         break #finaliza el ciclo
 
-
 def VerCama():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    clear_screen()
     ListarCama()
+    
 
+    # print("")
+    # opcion = input('Ingresa:  1 para volver al menu | 2 Para Mover cama de habitacion \n \n ')
 
+    # if opcion == '1':
+    #     print("Volviendo al Menu Principal")
+
+    # elif opcion == '2':
+    #     print("Mover cama de habitacion")
+    #     VerHabitacion()
+    #     # MoverCamas()
+        
+    # else:
+    #     print("Opción inválida. Volviendo al Menu Principal")
+
+    punto_interrupcion()
+
+# def MoverCamas():
+#     camas=[]
+#     while True:
+#         l=Cama()
+#         l.SetHabitacion_origen(input('Ingresa habitacion Origen : \n'))
+#         l.SetHabitacion(input('Ingresa habitacion Destino : \n'))
+#         camas.append(l)
+#         for cama in camas:
+#             MoverCama(cama)
+#         break #finaliza el ciclo

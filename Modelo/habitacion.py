@@ -20,6 +20,9 @@ class Habitacion:
 def punto_interrupcion():
     input("Presiona una tecla para continuar...")
 
+def punto_interrupcion():
+    input("Presiona una tecla para continuar...")
+
 def conectar_bd():
     try:
         conexion = psy.connect(host=config.host,database=config.database,user=config.user,password=config.password)
@@ -27,15 +30,28 @@ def conectar_bd():
     except psy.Error as error:
         print("Error al conectar a la base de datos:", error)
         return None
-    
 
 def insHabitacion(l):
     try:
         conexion = conectar_bd()
         cursor = conexion.cursor()
-        query = "INSERT INTO habitacion (numero, capacidad) VALUES(%s,%s);"
-        cursor.execute(query, (l.GetNumero(),l.GetCapacidad(),))
-        conexion.commit()
+
+        habitacionexiste = valida_habitacion_existe(l.GetNumero())
+
+        if habitacionexiste:
+            query = "INSERT INTO habitacion (numero, capacidad) VALUES(%s,%s);"
+            cursor.execute(query, (l.GetNumero(),l.GetCapacidad(),))
+            conexion.commit()
+
+            if cursor.rowcount > 0:
+                print("Habitacion ingresado con exito.")
+            else:
+                print("Error al ingresar al Habitacion.")
+            
+            punto_interrupcion()
+        else:
+            print("El ID ingresado, ya se encuentra en nuestros registros")
+            punto_interrupcion()
 
     except psy.Error as error:
         print("Error al ejecutar la consulta:", error)
@@ -96,6 +112,69 @@ def obtener_id_habitacion(habitacion):
         # -------------------------------------------------------------------------------
     except psy.Error as error:
         print("Error al ejecutar la consulta: ", error)
+
+    except TypeError as e:
+        print("Error al ejecutar la consulta: ",e)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion:
+            conexion.close()
+
+def valida_habitacion_existe(habitacion):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = "select habitacion.habitacionid from habitacion where numero = %s;"
+        cursor.execute(query, (habitacion,))
+
+        if cursor.rowcount > 0:
+            return False
+        else:
+            return True
+            
+    except psy.Error as error:
+        print("Error al ejecutar la consulta: ", error)
+
+    except TypeError as e:
+        print("Error al ejecutar la consulta: ",e)
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion:
+            conexion.close()
+
+def valida_habitacion_capacidad(habitacion):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = """
+                SELECT  
+                capacidad,
+                (
+                SELECT COUNT(*) 
+                FROM cama 
+                WHERE habitacion.habitacionid = cama.habitacionid
+                ) AS Camas_habitacion
+                FROM 
+                habitacion where numero = %s                 
+                """
+        cursor.execute(query, (habitacion,))
+
+        row = cursor.fetchone()
+
+        if  {str(row[0])} <= {str(row[1])}:
+            return True
+        else:
+            return False
+            
+    except psy.Error as error:
+        print("Error al ejecutar la consulta: ", error)
+
+    except TypeError as e:
+        print("Error al ejecutar la consulta: ",e)
 
     finally:
         if cursor:
