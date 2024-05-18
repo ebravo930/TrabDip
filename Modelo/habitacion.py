@@ -17,6 +17,8 @@ class Habitacion:
     def SetCapacidad(self,capacidad):
         self.__capacidad = capacidad
 
+def punto_interrupcion():
+    input("Presiona una tecla para continuar...")
 
 def conectar_bd():
     try:
@@ -81,6 +83,7 @@ def ListarHab():
     finally:
         cursor.close()
         conexion.close()
+        punto_interrupcion()
 
 def obtener_id_habitacion(habitacion):
     try:

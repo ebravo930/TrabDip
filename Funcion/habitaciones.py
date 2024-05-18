@@ -10,13 +10,33 @@ def NuevaHabitacion():
     while True:
         #Creo por cada vuelta del ciclo una instancia de la clase libro asi no voy remplazando el anterior.
         l=Habitacion()
-        l.SetNumero(input('Ingresa Nuemro de la Habitacion: \n'))
-        l.SetCapacidad(input('Ingresa capacidad de camas \n'))
+
+        numero = input('Ingresa Nuemro de la Habitacion: \n')
+        if not validar_entero(numero):
+            print("Nuemro no valido. Por favor, ingresa un Nuemro válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break
+        l.SetNumero()
+
+        capacidad = input('Ingresa capacidad de camas \n')
+        if not validar_entero(capacidad):
+            print("Capacidad no valido. Por favor, ingresa un Capacidad válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break 
+        l.SetCapacidad(capacidad)
+
         habitaciones.append(l)
         for habitacion in habitaciones:
             insHabitacion(habitacion)
         break #finaliza el ciclo
 
 def VerHabitacion():
-    os.system('cls' if os.name == 'nt' else 'clear')
     ListarHab()
+
+def validar_entero(dato):
+    if dato.strip() == "":
+        return False  # Cadena vacía
+    if dato.isdigit():
+        return True   # Es un entero
+    else:
+        return False  # No es un entero

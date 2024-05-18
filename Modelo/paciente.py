@@ -16,6 +16,9 @@ class Paciente:
     def SetNombre(self,nombre):
         self.__nombre = nombre
 
+def punto_interrupcion():
+    input("Presiona una tecla para continuar...")
+
 def conectar_bd():
     try:
         conexion = psy.connect(host=config.host,database=config.database,user=config.user,password=config.password)
@@ -28,13 +31,16 @@ def obtener_id_paciente(rut):
     try:
         conexion = conectar_bd()
         cursor = conexion.cursor()
-        query = "SELECT id FROM paciente WHERE rut = %s;"
+        query = "SELECT pacienteid FROM paciente WHERE rut = %s;"
         cursor.execute(query, (rut,))
         # -------------------------------------------------------------------------------
         return cursor.fetchone()[0]
         # -------------------------------------------------------------------------------
     except psy.Error as error:
         print("Error al ejecutar la consulta: ", error)
+
+    except TypeError as e:
+        print("Error al ejecutar la consulta: ",e)
 
     finally:
         if cursor:
@@ -89,3 +95,34 @@ def ListarPac():
             cursor.close()
         if conexion:
             conexion.close()
+
+def EditaPaciente(l):
+    try:
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
+        query = """
+            UPDATE paciente 
+            SET rut  = %s ,
+                nombre = %s 
+                WHERE pacienteid = %s
+        """
+        id = obtener_id_paciente(l.GetRut())
+        cursor.execute(query, (l.GetRut(), l.GetNombre(), id))
+
+        if cursor.rowcount > 0:
+            print("Estado actualizado con exito.")
+        else:
+            print("Error al actualizar, valide los datos ingresados.")
+
+        conexion.commit()
+        punto_interrupcion()
+
+    except psy.Error as error:
+        print("Error al ejecutar la consulta:", error)
+        punto_interrupcion()
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion:
+            conexion.close() 

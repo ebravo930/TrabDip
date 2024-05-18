@@ -1,6 +1,7 @@
 import os
 from Modelo.medico import *
 
+
 def clear_screen():
     """Limpia la pantalla de la consola para diferentes sistemas operativos."""
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -11,8 +12,21 @@ def NuevoMedico():
     while True:
         #Creo por cada vuelta del ciclo una instancia de la clase libro asi no voy remplazando el anterior.
         l=Medico()
-        l.SetNombre(input('Ingresa Nombre Medico: \n'))
-        l.SetEspecialidad(input('Ingresa Especialidad Medico: \n'))
+
+        nombre = input('Ingresa Nombre Medico: \n')
+        if len(nombre.strip()) == 0:
+            print("Nombre no valido. Por favor, ingresa un Nombre válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break
+        l.SetNombre(nombre)
+
+        especialidad = input('Ingresa Especialidad Medico: \n')
+        if len(especialidad.strip()) == 0:
+            print("Especialidad no valido. Por favor, ingresa un Especialidad válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break
+
+        l.SetEspecialidad(especialidad)
         medicos.append(l)
         for medico in medicos:
             InsMedico(medico)
@@ -41,21 +55,40 @@ def VerMedicos():
         print("Opción inválida. Volviendo al Menu Principal")
 
 def EditarMedico():
-    clear_screen()
+    # clear_screen()
     medicos=[]
     while True:
-        #Creo por cada vuelta del ciclo una instancia de la clase libro asi no voy remplazando el anterior.
+
         l=Medico()
-        l.SetMedicoid(input('Ingresa ID Medico a editar: \n'))
-        l.SetNombre(input('Ingresa Nombre Medico: \n'))
-        l.SetEspecialidad(input('Ingresa Especialidad Medico: \n'))
+
+        id = input('Ingresa ID Medico a editar: \n')
+        if len(id.strip()) == 0:
+            print("ID no valido. Por favor, ingresa un ID válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break
+        l.SetMedicoid(id)
+        
+        nombre = input('Ingresa Nombre Medico: \n')
+        if len(nombre.strip()) == 0:
+            print("Nombre no valido. Por favor, ingresa un Nombre válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break
+        l.SetNombre(nombre)
+
+        especialidad = input('Ingresa Especialidad Medico: \n')
+        if len(especialidad.strip()) == 0:
+            print("Especialidad no valido. Por favor, ingresa un Especialidad válido. Volviendo al menu principal")
+            punto_interrupcion()
+            break
+        l.SetEspecialidad(especialidad)
+
         medicos.append(l)
         for medico in medicos:
             EditaMedico(medico)
         break #finaliza el ciclo
 
 def CambiarEstadoMedico():
-    clear_screen()
+    # clear_screen()
     medicos=[]
     while True:
         #Creo por cada vuelta del ciclo una instancia de la clase libro asi no voy remplazando el anterior.

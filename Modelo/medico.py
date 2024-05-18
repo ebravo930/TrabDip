@@ -30,7 +30,11 @@ class Medico:
             
     # def ShowData(self):
     #     print(f'Titulo:{self.__titulo}\nAutor:{self.__autor}')
-    
+
+# una vez se termina la ejecucion se borra la consola y no se identifican los mensajes, para eso el punto de interrupcion
+def punto_interrupcion():
+    input("Presiona una tecla para continuar...")
+
 def conectar_bd():
     try:
         conexion = psy.connect(host=config.host,database=config.database,user=config.user,password=config.password)
@@ -100,8 +104,14 @@ def CambiaEstado(l):
             cursor.execute(query, (False, l.GetMedicoid(),))
         else:
             cursor.execute(query, (True, l.GetMedicoid(),))
+        
+        if cursor.rowcount > 0:
+            print("Estado actualizado con exito.")
+        else:
+            print("No se pudo actualizar el estado, valide los datos ingresados.")
 
         conexion.commit()
+        punto_interrupcion()
 
     except psy.Error as error:
         print("Error al ejecutar la consulta:", error)
@@ -124,6 +134,9 @@ def obtener_estado_medico(medicoid):
     except psy.Error as error:
         print("Error al ejecutar la consulta: ", error)
 
+    except TypeError as e:
+        print("Error al ejecutar la consulta: ",e)
+
     finally:
         if cursor:
             cursor.close()
@@ -141,7 +154,14 @@ def EditaMedico(l):
                 WHERE medicoid = %s
         """
         cursor.execute(query, (l.GetNombre(), l.GetEspecialidad(), l.GetMedicoid()))
+
+        if cursor.rowcount > 0:
+            print("Estado actualizado con exito.")
+        else:
+            print("Error al actualizar, valide los datos ingresados.")
+
         conexion.commit()
+        punto_interrupcion()
 
     except psy.Error as error:
         print("Error al ejecutar la consulta:", error)
