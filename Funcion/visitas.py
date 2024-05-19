@@ -41,8 +41,10 @@ def agregar_visita():
 def ver_visitas():
     print("Listado de Visitas")
     visitas = listar_visitas()
-    for visita in visitas:
-        print(visita)
+    if visitas != None:
+        for visita in visitas:
+            print(visita)
+
     input("Presione Enter para continuar...")
 
 def actualizar_visita():

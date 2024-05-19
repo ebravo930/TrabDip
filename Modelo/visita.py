@@ -47,12 +47,25 @@ def listar_visitas():
     if conexion:
         cursor = conexion.cursor()
         try:
-            cursor.execute("SELECT * FROM Visita;")
+            # Se realiza una consulta que une las tablas Visita, Paciente y Medico para obtener los nombres
+            query = """
+                SELECT p.Nombre AS NombrePaciente, m.Nombre AS NombreMedico, v.FechaEntrada, v.FechaSalida
+                FROM Visita v
+                JOIN Paciente p ON v.PacienteId = p.PacienteId
+                JOIN Medico m ON v.MedicoId = m.MedicoId;
+            """
+            cursor.execute(query)
             visitas = cursor.fetchall()
-            for visita in visitas:
-                print(visita)
+            # Formatear la salida para una mejor legibilidad
+            if visitas:
+                for visita in visitas:
+                    nombre_paciente, nombre_medico, fecha_entrada, fecha_salida = visita
+                    print(f"Paciente: {nombre_paciente}, Médico: {nombre_medico}, Fecha de entrada: {fecha_entrada}, Fecha de salida: {fecha_salida}")
+            else:
+                print("No se encontraron visitas.")
         except psycopg2.Error as e:
             print("Error al listar visitas: ", e)
         finally:
             cursor.close()
             conexion.close()
+
