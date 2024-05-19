@@ -1,56 +1,99 @@
-from Funcion.medicos import NuevoMedico, VerMedicos
-from Funcion.pacientes import NuevoPaciente, VerPaciente
-from Funcion.habitaciones import NuevaHabitacion, VerHabitacion
-from Funcion.camas import NuevoCama, VerCama
-
+from Funcion.medicos import *
+from Funcion.pacientes import *
+from Funcion.habitaciones import *
+from Funcion.camas import *
+from Funcion.visitas import *
 import os
-#from funciones import NuevoMedico, VerMedicos, NuevoPaciente, VerPaciente, NuevaHabitacion, NuevoCama, VerHabitacion, VerCama
 
 def clear_screen():
     """Limpia la pantalla de la consola para diferentes sistemas operativos."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def menu():
+def main_menu():
     while True:
         clear_screen()
-        print("-" * 80)
-        print("Sistema de Gestión de Clínica")
-        print("1. Médicos")
-        print("   1.1 Ingresar médico     | 1.2 Listar médicos")
-        print("2. Pacientes")
-        print("   2.1 Ingresar paciente   | 2.2 Listar pacientes")
-        print("3. Habitación")
-        print("   3.1 Ingresar habitación | 3.2 Listar habitación")
-        print("4. Cama")
-        print("   4.1 Ingresar Cama       | 4.2 Listar cama")
-        print("5. Salir")
-        print("-" * 80)
+        print("Sistema de Gestión Hospitalaria")
+        print("1. Gestionar Pacientes")
+        print("2. Gestionar Médicos")
+        print("3. Gestionar Visitas")
+        print("4. Salir")
+        opcion = input("Seleccione una opción: ")
 
-        opcion = input("Ingrese una opción: ").strip()
-        clear_screen()
-        if opcion == '1.1':
-            NuevoMedico()
-        elif opcion == '1.2':
-            VerMedicos()
-        elif opcion == '2.1':
-            NuevoPaciente()
-        elif opcion == '2.2':
-            VerPaciente()
-        elif opcion == '3.1':
-            NuevaHabitacion()
-        elif opcion == '3.2':
-            VerHabitacion()
-        elif opcion == '4.1':
-            NuevoCama()
-        elif opcion == '4.2':
-            VerCama()
-        elif opcion == '5':
-            print("Saliendo...")
+        if opcion == '1':
+            gestionar_pacientes()
+        elif opcion == '2':
+            gestionar_medicos()
+        elif opcion == '3':
+            gestionar_visitas()
+        elif opcion == '4':
+            print("Saliendo del sistema...")
             break
         else:
-            clear_screen()
-            print("Opción inválida. Por favor, seleccione una opción válida.")
-            input("Presione Enter para continuar...")  # Pausa para que el usuario vea el mensaje
+            print("Opción no válida. Por favor intente nuevamente.")
+            input("Presiona Enter para continuar...")
+
+def gestionar_pacientes():
+    while True:
+        clear_screen()
+        print("Gestión de Pacientes")
+        print("1. Agregar Nuevo Paciente")
+        print("2. Ver Pacientes")
+        print("3. Volver al Menú Principal")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == '1':
+            NuevoPaciente()
+        elif opcion == '2':
+            VerPaciente()
+        elif opcion == '3':
+            break
+        else:
+            print("Opción no válida.")
+            input("Presiona Enter para continuar...")
+
+def gestionar_medicos():
+    while True:
+        clear_screen()
+        print("Gestión de Médicos")
+        print("1. Agregar Nuevo Médico")
+        print("2. Ver Médicos")
+        print("3. Volver al Menú Principal")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == '1':
+            NuevoMedico()
+        elif opcion == '2':
+            VerMedicos()
+        elif opcion == '3':
+            break
+        else:
+            print("Opción no válida.")
+            input("Presiona Enter para continuar...")
+
+def gestionar_visitas():
+    while True:
+        clear_screen()
+        print("Gestión de Visitas")
+        print("1. Agregar Nueva Visita")
+        print("2. Ver Visitas")
+        print("3. Actualizar Visita")
+        print("4. Eliminar Visita")
+        print("5. Volver al Menú Principal")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == '1':
+            agregar_visita()
+        elif opcion == '2':
+            ver_visitas()
+        elif opcion == '3':
+            actualizar_visita()
+        elif opcion == '4':
+            eliminar_visita()
+        elif opcion == '5':
+            break
+        else:
+            print("Opción no válida.")
+            input("Presiona Enter para continuar...")
 
 if __name__ == "__main__":
-    menu()
+    main_menu()
